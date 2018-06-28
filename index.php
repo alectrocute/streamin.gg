@@ -1,4 +1,5 @@
 <?php
+// alec armbruster, al-ec on github
 use Alltube\Config;
 use Alltube\VideoDownload;
 require_once __DIR__.'/vendor/autoload.php';
