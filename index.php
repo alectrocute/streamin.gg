@@ -1,5 +1,4 @@
 <?php
-// alec armbruster, al-ec on github
 use Alltube\Config;
 use Alltube\VideoDownload;
 require_once __DIR__.'/vendor/autoload.php';
@@ -35,39 +34,43 @@ $noVideoMsg = 0;
 }
 }
 ?>
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>streamin.gg
-    </title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js">
-    </script>
-  </head>
-  <body>
-    <section class="section">
-      <div class="container">
-        <h1 class="title">streamin.gg
-        </h1>
-        <p class="subtitle">Paste your video link in the box here:
-        </p>
-        <div class="field has-addons">
-          <div class="control is-expanded has-icons-left">
-            <form action="index.php" method="post">
-              <input class="input is-medium" type="text" name="URL" placeholder="Paste video link directly from browser"> 
-              <span class="icon is-left">
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>streamin.gg </title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+        <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js">
+        </script>
+        <script type="text/javascript">
+            function showLoading() {
+                x = "Grabbing...";
+                document.getElementById("submitButton").innerText = x;
+                return;
+            }
+        </script>
+    </head>
+
+    <body>
+        <section class="section">
+            <div class="container">
+                <h1 class="title"><a href="https://streamin.gg" style="color: black;">streamin.gg</a>
+                </h1>
+                <p class="subtitle">Paste your video link in the box here: </p>
+                <div class="field has-addons">
+                    <div class="control is-expanded has-icons-left">
+                        <form action="index.php" method="post" onsubmit="showLoading()">
+                            <input class="input is-medium" type="text" name="URL" placeholder="Paste video link directly from browser"> <span class="icon is-left">
                 <i class="fas fa-video">
                 </i>
-              </span> 
-              </div>
-            <div class="control"> 
-              <button type="submit" name"submit" class="button is-medium">Download
-                </a> 
-            </div>
-          </div>
-          <?php if($noVideoMsg == "1") {
+              </span> </div>
+                    <div class="control">
+                        <button type="submit" name="submitButton" id="submitButton" class="button is-medium" onclick="showLoading()">Download</button>
+                    </div>
+                </div>
+                <?php if($noVideoMsg == "1") {
 echo "<br><article class='message has-icons-right is-small is-alert'><div class='message-header'><span class='icon is-right'>
 <i class='fas fa-warning'></i>
 </span> <p>No video link detected</p></div><div class='message-body'>We can't bake without any ingredients! :(</div></article>";
@@ -88,6 +91,9 @@ echo $_POST['URL'];
 echo "</pre>";
 echo "</article>"; 
 } ?>
-          </section>
-        </body>
-      </html>
+            </div>
+            </div>
+        </section>
+    </body>
+
+    </html>
