@@ -29,7 +29,11 @@ location ~ \.mp3$ {
     proxy_cache_bypass 1;
     try_files $uri $uri/;
 }
-
+location ~ \.mp4$ {
+    proxy_no_cache 1;
+    proxy_cache_bypass 1;
+    try_files $uri $uri/;
+}
         location ~ \.php$ {
                 include fastcgi.conf;
                 include fastcgi_params;
