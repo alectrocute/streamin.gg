@@ -1,14 +1,20 @@
-server {
-        server_name _;
-        listen *:80 default_server;
-        
-        root /var/www/streamingg;
-        index index.php index.html;
+# alec armbruster, open source
+# github.com/al-ec/streamin.gg
+# use this legally!
 
-        access_log  /var/log/nginx/access.log;
-        error_log   /var/log/nginx/error.log;
-        error_page 500 index.php;
-        error_page 404 index.php;
+# nginx web server config, change as needed!
+
+server {
+    server_name streamin.gg; # change me
+        
+        root /var/www/streamingg; # change me
+        index index.php index.html;
+        autoindex on;
+
+        access_log  /var/log/nginx/access.log; # change me
+        error_log   /var/log/nginx/error.log; # change me
+        error_page 500 /;
+        error_page 404 /;
         
         types {
                 text/html   html htm shtml;
@@ -17,26 +23,44 @@ server {
                 application/x-web-app-manifest+json   webapp;
         }
 
-        location / {
-                try_files $uri /index.php?$args;
-        }
+
+location ~ \.mp3$ {
+    proxy_no_cache 1;
+    proxy_cache_bypass 1;
+    try_files $uri $uri/;
+}
 
         location ~ \.php$ {
-        
-                try_files $uri /index.php?$args;
+                include fastcgi.conf;
+                include fastcgi_params;
 
                 fastcgi_param   PATH_INFO         $fastcgi_path_info;
                 fastcgi_param   SCRIPT_FILENAME   $document_root$fastcgi_script_name;
 
-                fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+                fastcgi_pass unix:/run/php/php7.0-fpm.sock; # change me
                 fastcgi_index index.php;
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                fastcgi_intercept_errors off;
+                fastcgi_intercept_errors on;
 
                 fastcgi_buffer_size 16k;
                 fastcgi_buffers 4 16k;
-                
-                include fastcgi.conf;
-                include fastcgi_params;
+
         }
+    listen 443 ssl; # managed by Certbot # change me
+    ssl_certificate /etc/letsencrypt/live/streamin.gg/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/streamin.gg/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}server {
+    if ($host = streamin.gg) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    server_name streamin.gg;
+        listen *:80 ;
+    return 404; # managed by Certbot
+
+
 }
